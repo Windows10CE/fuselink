@@ -1,0 +1,2 @@
+[workspace]
+members = ["fuselink", "fuselink-server", "fuselink-common"]
