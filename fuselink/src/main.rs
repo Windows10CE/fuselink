@@ -30,7 +30,7 @@ fn main() -> anyhow::Result<()> {
 
     let thread_stop: &'static _ = Box::leak(Box::new(AtomicBool::new(false)));
 
-    let thread_vars = (name.clone(), pass.clone());
+    let thread_vars = (name, pass.clone());
     let thread = std::thread::spawn(move || {
         let (name, pass) = thread_vars;
         while !thread_stop.load(std::sync::atomic::Ordering::SeqCst) {
@@ -125,7 +125,7 @@ Enter a number: "#
                         i + 1,
                         p.nickname,
                         p.species_name,
-                        name,
+                        p.owner_name,
                         p.obtained_location
                     ));
                 }
@@ -158,9 +158,8 @@ Enter a number: "#
     Ok(())
 }
 
-fn readline() -> Result<String, std::io::Error> {
+fn readline() -> Result<String, io::Error> {
     let mut line = String::new();
     stdin().read_line(&mut line)?;
-    line.pop();
-    Ok(line)
+    Ok(line.lines().next().unwrap().to_string())
 }
